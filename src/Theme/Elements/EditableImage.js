@@ -5,12 +5,12 @@ import { Image } from "./Image";
 // import ImageEditorState from "../../Editor/ImageEditorState";
 import Layer from "../../Editor/Layer";
 import Align from "../../Editor/Align";
-// import ImageToolbar from "../../Editor/ImageToolbar";
+import ImageToolbar from "../../Editor/ImageEditor/Toolbar";
 import CropEditor from "../../Editor/CropEditor";
 import * as cropStyles from "../../constants/cropStyles";
 
 export function EditableImage({ style, ...props }) {
-  const [showEditOption, setShowEditOption] = useState(false);
+  const [showEditOption, setShowEditOption] = useState(true);
   const [showCropEditor, setShowCropEditor] = useState(false);
   const [cropStyle, setCropStyle] = useState(cropStyles.freeform);
   const [ref, setRef] = useState();
@@ -20,14 +20,15 @@ export function EditableImage({ style, ...props }) {
   }, []);
 
   function handleStartCrop(cropStyle) {
-    setShowCropEditor(true);
-    setCropStyle(cropStyle);
+    console.log(cropStyle);
+    // setShowCropEditor(true);
+    // setCropStyle(cropStyle);
   }
 
   const imageEditToolbar = showEditOption ? (
     <Layer>
       <Align node={ref} offset={{ top: 47, left: -10 }}>
-        {/* <ImageToolbar onStartCrop={handleStartCrop} /> */}
+        <ImageToolbar onStartCrop={handleStartCrop} />
       </Align>
     </Layer>
   ) : null;
@@ -40,8 +41,8 @@ export function EditableImage({ style, ...props }) {
         active: showEditOption
       })}
       ref={saveRef}
-      onMouseOver={() => setShowEditOption(true)}
-      onMouseLeave={() => setShowEditOption(false)}
+      // onMouseOver={() => setShowEditOption(true)}
+      // onMouseLeave={() => setShowEditOption(false)}
     >
       {imageEditToolbar}
       {shouldDisplayImage && (

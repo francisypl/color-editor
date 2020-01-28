@@ -16,7 +16,7 @@ import Widget from "./Widget";
 
 const data = [
   "https://img1.wsimg.com/isteam/stock/1036",
-  "https://img1.wsimg.com/isteam/stock/1039",
+  "https://img1.wsimg.com/isteam/stock/1036",
   "https://img1.wsimg.com/isteam/stock/1051"
 ];
 
@@ -37,12 +37,12 @@ export default function About(props) {
             {data.map((img, i) => (
               <Flex key={i} flexDirection="column" justifyContent="center">
                 <EditableImage
+                  editing={i === 0}
                   treatment="cover"
                   height={200}
-                  mb={24}
                   src={img}
                 />
-                <Heading level={4} textStyle="h4" mb={24}>
+                <Heading level={4} textStyle="h4" mt={24} mb={24}>
                   Sub Heading
                 </Heading>
                 <Text textStyle="text">{textString}</Text>

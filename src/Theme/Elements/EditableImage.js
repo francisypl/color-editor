@@ -9,9 +9,10 @@ import ImageToolbar from "../../Editor/ImageEditor/Toolbar";
 import CropEditor from "../../Editor/CropEditor";
 import * as cropStyles from "../../constants/cropStyles";
 
-export function EditableImage({ style, ...props }) {
-  const [showEditOption, setShowEditOption] = useState(true);
-  const [showCropEditor, setShowCropEditor] = useState(false);
+export function EditableImage({ style, editing, ...props }) {
+  const [showEditOption, setShowEditOption] = useState(false);
+  const [showCropEditor, setShowCropEditor] = useState(editing);
+  const [imgDimension, setImgDimension] = useState();
   const [cropStyle, setCropStyle] = useState(cropStyles.freeform);
   const [ref, setRef] = useState();
 
@@ -20,12 +21,20 @@ export function EditableImage({ style, ...props }) {
   }, []);
 
   function handleStartCrop(cropStyle) {
-    console.log(cropStyle);
-    // setShowCropEditor(true);
-    // setCropStyle(cropStyle);
+    setShowCropEditor(true);
+    setCropStyle(cropStyle);
   }
 
-  const imageEditToolbar = showEditOption ? (
+  function handleImageOnLoad(e) {
+    const imgDimension = e.target.getBoundingClientRect();
+    setImgDimension({
+      width: imgDimension.width,
+      height: imgDimension.height
+    });
+  }
+
+  const showToolbar = showEditOption && !showCropEditor;
+  const imageEditToolbar = showToolbar ? (
     <Layer>
       <Align node={ref} offset={{ top: 47, left: -10 }}>
         <ImageToolbar onStartCrop={handleStartCrop} />
@@ -35,20 +44,34 @@ export function EditableImage({ style, ...props }) {
 
   const shouldDisplayImage = !showCropEditor;
 
+  const imgEl = (
+    <Image
+      style={{ width: "100%", ...style }}
+      onLoad={handleImageOnLoad}
+      {...props}
+    />
+  );
+
   return (
     <div
       className={cx("image-edit-container", {
-        active: showEditOption
+        active: showToolbar
       })}
       ref={saveRef}
-      // onMouseOver={() => setShowEditOption(true)}
-      // onMouseLeave={() => setShowEditOption(false)}
+      onMouseOver={() => setShowEditOption(true)}
+      onMouseLeave={() => setShowEditOption(false)}
     >
       {imageEditToolbar}
-      {shouldDisplayImage && (
-        <Image style={{ width: "100%", ...style }} {...props} />
+      {shouldDisplayImage && imgEl}
+      {showCropEditor && (
+        <CropEditor
+          cropStyle={cropStyle}
+          src={props.src}
+          frameDimension={imgDimension}
+        >
+          {imgEl}
+        </CropEditor>
       )}
-      {showCropEditor && <CropEditor cropStyle={cropStyle} />}
     </div>
   );
 }

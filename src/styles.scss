@@ -453,31 +453,20 @@ aside {
 
 .crop-handle {
   position: absolute;
-  &:after {
-    content: "";
-    width: 20px;
-    height: 5px;
-    background-color: red;
-    display: block;
-  }
+  width: 20px;
+  height: 5px;
+  background-color: red;
   &.top {
-    left: 45%;
     cursor: ns-resize;
   }
   &.right {
-    top: 50%;
-    left: 94%;
     transform: rotate(90deg);
     cursor: ew-resize;
   }
   &.bottom {
-    top: 95%;
-    left: 45%;
     cursor: ns-resize;
   }
   &.left {
-    top: 50%;
-    left: -4%;
     transform: rotate(90deg);
     cursor: ew-resize;
   }

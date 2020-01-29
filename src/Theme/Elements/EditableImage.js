@@ -12,7 +12,6 @@ import * as cropStyles from "../../constants/cropStyles";
 export function EditableImage({ style, editing, ...props }) {
   const [showEditOption, setShowEditOption] = useState(false);
   const [showCropEditor, setShowCropEditor] = useState(editing);
-  const [imgDimension, setImgDimension] = useState();
   const [cropStyle, setCropStyle] = useState(cropStyles.freeform);
   const [ref, setRef] = useState();
 
@@ -23,14 +22,6 @@ export function EditableImage({ style, editing, ...props }) {
   function handleStartCrop(cropStyle) {
     setShowCropEditor(true);
     setCropStyle(cropStyle);
-  }
-
-  function handleImageOnLoad(e) {
-    const imgDimension = e.target.getBoundingClientRect();
-    setImgDimension({
-      width: imgDimension.width,
-      height: imgDimension.height
-    });
   }
 
   const showToolbar = showEditOption && !showCropEditor;
@@ -44,13 +35,7 @@ export function EditableImage({ style, editing, ...props }) {
 
   const shouldDisplayImage = !showCropEditor;
 
-  const imgEl = (
-    <Image
-      style={{ width: "100%", ...style }}
-      onLoad={handleImageOnLoad}
-      {...props}
-    />
-  );
+  const imgEl = <Image style={{ width: "100%", ...style }} {...props} />;
 
   return (
     <div
@@ -64,11 +49,7 @@ export function EditableImage({ style, editing, ...props }) {
       {imageEditToolbar}
       {shouldDisplayImage && imgEl}
       {showCropEditor && (
-        <CropEditor
-          cropStyle={cropStyle}
-          src={props.src}
-          frameDimension={imgDimension}
-        >
+        <CropEditor cropStyle={cropStyle} src={props.src}>
           {imgEl}
         </CropEditor>
       )}
